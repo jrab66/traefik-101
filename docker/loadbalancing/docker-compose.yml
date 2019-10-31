@@ -1,0 +1,21 @@
+version: '3.3'
+
+networks:
+  web:
+    external: true
+
+services:
+  machine:
+    image: katacoda/docker-http-server
+    labels:
+      - traefik.backend=http1
+      - traefik.frontend.rule=Host:http1.domain.com
+    networks:
+      - web  
+  echo:
+    image: katacoda/docker-http-server:v2
+    labels:
+      - traefik.backend=echo
+      - traefik.frontend.rule=Host:http2.domain.com
+    networks:
+      - web

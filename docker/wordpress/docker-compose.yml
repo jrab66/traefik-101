@@ -1,0 +1,40 @@
+version: '3.3'
+
+networks:
+  web:
+    external: true
+  internal:
+    external: false
+services:
+   db:
+     image: mysql:5.7
+     networks:
+       - internal
+         #  - web
+     volumes:
+       - dbdata:/var/lib/mysql
+     environment:
+       MYSQL_ROOT_PASSWORD: horchatajs
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: javascript
+       MYSQL_PASSWORD: horchatauser
+
+   wordpress:
+     depends_on:
+       - db
+     image: wordpress:latest
+     container_name: "wordpress"
+     labels:
+      - traefik.backend=blogprueba
+      - traefik.frontend.rule=Host:blogprueba.domain.com
+      - traefik.docker.network=web
+      - traefik.port=80
+     networks:
+       - internal
+       - web
+     environment:
+       WORDPRESS_DB_HOST: db:3306
+       WORDPRESS_DB_USER: javascript
+       WORDPRESS_DB_PASSWORD: horchatauser
+volumes:
+    dbdata:

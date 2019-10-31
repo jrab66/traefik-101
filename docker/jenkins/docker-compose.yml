@@ -1,0 +1,19 @@
+version: '3.3'
+
+networks:
+  web:
+    external: true
+  internal:
+    external: false
+services:
+   jenkins:
+     image: jenkins:latest
+     container_name: "jenkins"
+     labels:
+      - traefik.backend=jenkins
+      - traefik.frontend.rule=Host:jenkins.domain.com
+      - traefik.docker.network=web
+      - traefik.port=8080
+     networks:
+       - internal
+       - web

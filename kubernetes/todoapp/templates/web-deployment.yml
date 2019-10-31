@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: {{ .Values.web.name }}
+    labels:
+        my-super-app: {{ .Values.web.name }}
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            my-super-app: {{ .Values.web.name }}
+    template:
+        metadata:
+            labels:
+                my-super-app: {{ .Values.web.name }}
+        spec:
+            imagePullSecrets:
+                - name: gitlab-registry
+            containers:
+                -
+                    image: {{ .Values.web.image }}
+                    imagePullPolicy: Always
+                    name: {{ .Values.web.name }}
+                    ports:
+                        -
+                            containerPort: 80
