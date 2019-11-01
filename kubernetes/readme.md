@@ -72,4 +72,13 @@ kubectl scale --replicas=3 deployment todoapp
 - borrar deploy
 ```
 helm delete todoapp --purge
+
+```
+
+- Borrar helm
+```
+kubectl -n kube-system delete deployment tiller-deploy &&
+kubectl delete clusterrolebinding tiller &&
+kubectl -n kube-system delete serviceaccount tiller &&
+kubectl get all -n kube-system -l app=helm -o name|xargs kubectl delete -n kube-system
 ```
